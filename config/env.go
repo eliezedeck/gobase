@@ -1,6 +1,10 @@
 package config
 
-import "os"
+import (
+	"fmt"
+	"os"
+	"strings"
+)
 
 func GetApiPrefix(defaultprefix string) string {
 	prefix := os.Getenv("API_PREFIX")
@@ -20,4 +24,20 @@ func GetApiPrefix(defaultprefix string) string {
 		return ""
 	}
 	return prefix
+}
+
+func MustGetEnvValue(key string) string {
+	v := strings.TrimSpace(os.Getenv(key))
+	if v == "" {
+		panic(fmt.Sprintf("the environment variable %s must be set", key))
+	}
+	return v
+}
+
+func GetEnvValueOrDefault(key, defvalue string) string {
+	v := strings.TrimSpace(os.Getenv(key))
+	if v == "" {
+		return defvalue
+	}
+	return v
 }
