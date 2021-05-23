@@ -1,4 +1,4 @@
-module http
+module github.com/eliezedeck/gobase/http
 
 go 1.16
 
