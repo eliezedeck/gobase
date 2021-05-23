@@ -1,4 +1,4 @@
-module validation
+module github.com/eliezedeck/gobase/validation
 
 go 1.16
 

@@ -1,4 +1,4 @@
-module logging
+module github.com/eliezedeck/gobase/logging
 
 go 1.16
 
