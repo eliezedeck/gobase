@@ -14,7 +14,6 @@ var (
 	SendAlertImplementation   = defaultSendAlert
 	SendAlertDebounceDuration = 60 * time.Minute
 	SendAlertDisabled         = false
-	NoAlertHosts              []string
 )
 
 var (
@@ -22,13 +21,14 @@ var (
 	tagsDebounceTrackingMutex = &sync.Mutex{}
 )
 
-func init() {
+// DisableForHosts is to be called if you wish to disable alerting for some hosts (for example, during development)
+func DisableForHosts(hosts []string) {
 	hostname, err := os.Hostname()
 	if err != nil {
 		panic(err)
 	}
 	cnh := strings.ToLower(strings.TrimSpace(hostname))
-	for _, h := range NoAlertHosts {
+	for _, h := range hosts {
 		nh := strings.ToLower(strings.TrimSpace(h))
 		if nh == cnh {
 			SendAlertDisabled = true
