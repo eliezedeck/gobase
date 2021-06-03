@@ -9,8 +9,8 @@ import (
 	"go.uber.org/zap/zapcore"
 )
 
-// ZapLogger is a middleware and zap to provide an "access log" logging for each request.
-func ZapLogger(logger *zap.Logger) echo.MiddlewareFunc {
+// ZapLoggerForEcho is a middleware and zap to provide an "access log" logging for each request.
+func ZapLoggerForEcho(logger *zap.Logger) echo.MiddlewareFunc {
 	return func(next echo.HandlerFunc) echo.HandlerFunc {
 		return func(c echo.Context) error {
 			// Use a logger for this context only, may be replaced if there is an error (see below)
