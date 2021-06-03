@@ -54,7 +54,7 @@ func ZapLogger(logger *zap.Logger) echo.MiddlewareFunc {
 				requestLogger.Info("Success", fields...)
 			}
 
-			return nil
+			return err
 		}
 	}
 }
