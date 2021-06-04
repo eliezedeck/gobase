@@ -7,19 +7,23 @@ import (
 )
 
 var (
-	DefaultPushoverApp       = pushover.New("antz3gidwyf2hmqovwsip7q36hzise")
-	DefaultPushoverRecipient = pushover.NewRecipient("u1ckbx8wdfhkgi9k3nj1w2baoni47z")
+	defaultPushoverApp       *pushover.Pushover
+	defaultPushoverRecipient *pushover.Recipient
 )
 
 func SetDefaultPushoverTokens(app, recipient string) {
-	DefaultPushoverApp = pushover.New(app)
-	DefaultPushoverRecipient = pushover.NewRecipient(recipient)
+	defaultPushoverApp = pushover.New(app)
+	defaultPushoverRecipient = pushover.NewRecipient(recipient)
+	SendAlertImplementation = defaultSendAlert
 }
 
 // defaultSendAlert is an implementation that sends the message via PushOver
 func defaultSendAlert(title, message string) {
+	if defaultPushoverApp == nil || defaultPushoverRecipient == nil {
+		return
+	}
 	msg := pushover.NewMessageWithTitle(message, title)
-	if _, err := DefaultPushoverApp.SendMessage(msg, DefaultPushoverRecipient); err != nil {
+	if _, err := defaultPushoverApp.SendMessage(msg, defaultPushoverRecipient); err != nil {
 		logging.L.Error("Failed sending Alert", zap.Error(err))
 	}
 }
