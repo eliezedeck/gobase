@@ -38,4 +38,4 @@ For generating random stuffs, including a fast random string gen.
 
 ### validation
 
-Allows you to make validation easier with a pre-built `V` and `M` instances for a Validator and a Molder respectively.
+Allows you to make validation easier with the pre-built `V` and `M` for Validator and Mold instances respectively.
