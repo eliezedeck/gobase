@@ -39,3 +39,5 @@ For generating random stuffs, including a fast random string gen.
 ### validation
 
 Allows you to make validation easier with the pre-built `V` and `M` for Validator and Mold instances respectively.
+
+- `ValidateJSONBody` and optionally returns a recreated bytes of the JSON from the structure
