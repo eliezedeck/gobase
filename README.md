@@ -23,6 +23,9 @@ The package already contains a few frequent configurations that you can use.
 Zap (from Uber) is the default logger used in this library. This package provides an instance called `L` which you can
 import in any context (for example as dot package) for quick `L.Info(...)`.
 
+If the environment variable `SEQ_URL` is set, it will be used as the URL to a SEQ instance. Consequently, logs will also
+be sent to SEQ for your convenience. If you have a specific SEQ API Token, you can set it using `SEQ_API_TOKEN`.
+
 ### logging/alert
 
 The `alert` package allows to integrate any alerting system. It already contains a default system for sending alert to
