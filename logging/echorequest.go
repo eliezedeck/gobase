@@ -27,15 +27,22 @@ func ZapLoggerForEcho(logger *zap.Logger) echo.MiddlewareFunc {
 			req := c.Request()
 			res := c.Response()
 
-			fields := []zapcore.Field{
-				zap.Int("status", res.Status),
-				zap.String("ip", c.RealIP()),
-				// zap.String("host", req.Host),
-				zap.String("request", fmt.Sprintf("%s %s", req.Method, req.RequestURI)),
-				zap.Int64("size", res.Size),
-				zap.String("user_agent", req.UserAgent()),
-				zap.String("time", time.Since(start).String()),
+			fields := make([]zapcore.Field, 0, 10)
+
+			// Log the ActivityId
+			activityId := c.Get("activityId")
+			if activityId != nil {
+				fields = append(fields, zap.String("ActivityId", activityId.(string)))
 			}
+
+			fields = append(fields)
+			fields = append(fields, zap.Int("status", res.Status))
+			fields = append(fields, zap.String("ip", c.RealIP()))
+			// fields = append(fields, zap.String("host", req.Host))
+			fields = append(fields, zap.String("request", fmt.Sprintf("%s %s", req.Method, req.RequestURI)))
+			fields = append(fields, zap.Int64("size", res.Size))
+			fields = append(fields, zap.String("user_agent", req.UserAgent()))
+			fields = append(fields, zap.String("time", time.Since(start).String()))
 
 			id := req.Header.Get(echo.HeaderXRequestID)
 			if id != "" {
