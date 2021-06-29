@@ -42,6 +42,8 @@ func init() {
 		if err != nil {
 			panic(err)
 		}
-		L = loggerconsole
+		L = zap.New(loggerconsole.Core(),
+			zap.AddCaller(),
+			zap.AddStacktrace(zapcore.ErrorLevel))
 	}
 }
