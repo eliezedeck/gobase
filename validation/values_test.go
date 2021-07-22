@@ -20,3 +20,13 @@ func TestISO8601DateToTime(t *testing.T) {
 	}
 	t.Log(parsed)
 }
+
+func TestCompareISO8601Dates(t *testing.T) {
+	yes, err := CompareISO8601Dates("2021-07-21", "2021-07-22")
+	if err != nil {
+		panic(err)
+	}
+	if !yes {
+		t.Fatal("wrong comparison")
+	}
+}
