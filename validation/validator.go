@@ -9,7 +9,9 @@ import (
 var V = validator.New()
 
 var (
-	dateISO8601RegexStr = "^(-?(?:[1-9][0-9]*)?[0-9]{4})-(1[0-2]|0[1-9])-(3[01]|0[1-9]|[12][0-9])(?:T|\\s)(2[0-3]|[01][0-9]):([0-5][0-9]):([0-5][0-9])?(Z)?$"
+	// This is based on https://stackoverflow.com/questions/28020805/regex-validate-correct-iso8601-date-string-with-time
+	// but only for the date part
+	dateISO8601RegexStr = "^(?:[1-9]\\d{3}-(?:(?:0[1-9]|1[0-2])-(?:0[1-9]|1\\d|2[0-8])|(?:0[13-9]|1[0-2])-(?:29|30)|(?:0[13578]|1[02])-31)|(?:[1-9]\\d(?:0[48]|[2468][048]|[13579][26])|(?:[2468][048]|[13579][26])00)-02-29)$"
 	dateISO8601Regex    = regexp.MustCompile(dateISO8601RegexStr)
 )
 
