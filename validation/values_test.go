@@ -12,3 +12,11 @@ func TestIsValidHostnamePort(t *testing.T) {
 		t.Failed()
 	}
 }
+
+func TestISO8601DateToTime(t *testing.T) {
+	parsed, err := ISO8601DateToTime("2021-07-22")
+	if err != nil {
+		panic(err)
+	}
+	t.Log(parsed)
+}
