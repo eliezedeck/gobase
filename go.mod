@@ -3,6 +3,8 @@ module github.com/eliezedeck/gobase
 go 1.16
 
 require (
+	github.com/Azure/azure-pipeline-go v0.2.3
+	github.com/Azure/azure-storage-blob-go v0.14.0
 	github.com/eliezedeck/gozap2seq v0.2.1
 	github.com/go-playground/mold/v4 v4.0.0
 	github.com/go-playground/validator/v10 v10.6.1
