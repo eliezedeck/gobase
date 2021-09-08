@@ -13,18 +13,21 @@ func IsValidHostnamePort(hostport string) bool {
 	return true
 }
 
-// ISO8601DateToTime converts a date like 2021-07-22 as a time.Time. Note that the resulting timezone is +00:00.
-func ISO8601DateToTime(date string) (time.Time, error) {
-	return time.Parse("2006-01-02T15:04:05-0700", fmt.Sprintf("%sT00:00:00-0000", date))
+// ISO8601ShortDateToTime converts a date like 2021-07-22 as a time.Time. Note that the resulting timezone is +00:00.
+func ISO8601ShortDateToTime(date string, location ...*time.Location) (time.Time, error) {
+	if len(location) > 0 {
+		return time.ParseInLocation("2006-01-02T15:04:05", fmt.Sprintf("%sT00:00:00", date), location[0])
+	}
+	return time.ParseInLocation("2006-01-02T15:04:05", fmt.Sprintf("%sT00:00:00", date), time.Local)
 }
 
 // CompareISO8601Dates is a convenient method to compare that one ISO8601 date is older than the other.
 func CompareISO8601Dates(older, recent string) (bool, error) {
-	old, err := ISO8601DateToTime(older)
+	old, err := ISO8601ShortDateToTime(older)
 	if err != nil {
 		return false, err
 	}
-	fresh, err := ISO8601DateToTime(recent)
+	fresh, err := ISO8601ShortDateToTime(recent)
 	if err != nil {
 		return false, err
 	}

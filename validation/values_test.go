@@ -13,8 +13,8 @@ func TestIsValidHostnamePort(t *testing.T) {
 	}
 }
 
-func TestISO8601DateToTime(t *testing.T) {
-	parsed, err := ISO8601DateToTime("2021-07-22")
+func TestISO8601ShortDateToTime(t *testing.T) {
+	parsed, err := ISO8601ShortDateToTime("2021-07-22")
 	if err != nil {
 		panic(err)
 	}
