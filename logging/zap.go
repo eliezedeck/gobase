@@ -45,5 +45,6 @@ func init() {
 		L = zap.New(loggerconsole.Core(),
 			zap.AddCaller(),
 			zap.AddStacktrace(zapcore.ErrorLevel))
+		L.Warn("Running normally without SEQ /")
 	}
 }
