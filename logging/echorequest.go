@@ -52,13 +52,13 @@ func ZapLoggerForEcho(logger *zap.Logger) echo.MiddlewareFunc {
 			n := res.Status
 			switch {
 			case n >= 500:
-				requestLogger.Error("Server error", fields...)
+				requestLogger.Error(fmt.Sprintf("Server error: %s %s", req.Method, req.RequestURI), fields...)
 			case n >= 400:
-				requestLogger.Warn("Client error", fields...)
+				requestLogger.Warn(fmt.Sprintf("Client error: %s %s", req.Method, req.RequestURI), fields...)
 			case n >= 300:
-				requestLogger.Info("Redirection", fields...)
+				requestLogger.Info(fmt.Sprintf("Redirection: %s %s", req.Method, req.RequestURI), fields...)
 			default:
-				requestLogger.Info("Success", fields...)
+				requestLogger.Info(fmt.Sprintf("Success: %s %s", req.Method, req.RequestURI), fields...)
 			}
 
 			return err
