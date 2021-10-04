@@ -9,8 +9,6 @@ import (
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
-const DatabaseName = "bowa"
-
 var (
 	ErrFailedCreatingDBClient = errors.New("failed creating a DB client")
 	ErrFailedConnecting       = errors.New("failed connecting to the DB")
@@ -18,10 +16,11 @@ var (
 
 type Access struct {
 	dbClient *mongo.Client
+	dbName   string
 }
 
 // NewDBAccess creates a new DBAccess, connect to the database
-func NewDBAccess(uri string) (*Access, error) {
+func NewDBAccess(uri, database string) (*Access, error) {
 	client, err := mongo.NewClient(options.Client().ApplyURI(uri))
 	if err != nil {
 		return nil, ErrFailedCreatingDBClient
@@ -37,12 +36,13 @@ func NewDBAccess(uri string) (*Access, error) {
 
 	access := &Access{
 		dbClient: client,
+		dbName:   database,
 	}
 	return access, nil
 }
 
 func (a *Access) Collection(name string) *mongo.Collection {
-	return a.dbClient.Database(DatabaseName).Collection(name)
+	return a.dbClient.Database(a.dbName).Collection(name)
 }
 
 func (a *Access) CreateIndexes(ctx context.Context, coll string, models []mongo.IndexModel) error {
