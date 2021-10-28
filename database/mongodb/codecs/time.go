@@ -18,8 +18,10 @@ func (d CSharpNullTimeDecoder) DecodeValue(ctx bsoncodec.DecodeContext, vr bsonr
 		return errors.New("can't set the field value")
 	}
 	var (
-		vrType = vr.Type()
-		t      time.Time
+		vrType   = vr.Type()
+		t        time.Time
+		outIsPtr = val.Kind() == reflect.Ptr
+		outIsNil = false
 	)
 
 	switch vrType {
@@ -31,17 +33,15 @@ func (d CSharpNullTimeDecoder) DecodeValue(ctx bsoncodec.DecodeContext, vr bsonr
 			if err != nil {
 				return err
 			}
-			val.Set(reflect.ValueOf(&t)) // success
-			return nil
 		}
+
 	case bsontype.DateTime:
 		if dt, err := vr.ReadDateTime(); err != nil {
 			return err
 		} else {
 			t = time.Unix(dt/1000, dt%1000*1000000)
-			val.Set(reflect.ValueOf(&t)) // success
-			return nil
 		}
+
 	case bsontype.EmbeddedDocument:
 		dr, err := vr.ReadDocument()
 		if err != nil {
@@ -56,13 +56,29 @@ func (d CSharpNullTimeDecoder) DecodeValue(ctx bsoncodec.DecodeContext, vr bsonr
 		}
 
 		// This is the reason for this whole decoder
-		if v == "_csharpnull" {
-			val.Set(reflect.Zero(val.Type()))
-			return nil
+		if v != "_csharpnull" {
+			return fmt.Errorf("cannot decode %v (embedded) into a %s", val.Type())
 		}
-		return fmt.Errorf("cannot decode %v (embedded) into a time.Time", vrType)
+		outIsNil = true
+
+	case bsontype.Null:
+		if err := vr.ReadNull(); err != nil {
+			return err
+		}
+		outIsNil = true
 
 	default:
-		return fmt.Errorf("cannot decode %v into a time.Time", vrType)
+		return fmt.Errorf("cannot decode %v into a %s", vrType, val.Type())
 	}
+
+	if outIsPtr {
+		if outIsNil {
+			val.Set(reflect.Zero(val.Type())) // return as nil pointer
+		} else {
+			val.Set(reflect.ValueOf(&t)) // return as pointer to t
+		}
+	} else {
+		val.Set(reflect.ValueOf(t)) // return as struct
+	}
+	return nil
 }
