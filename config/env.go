@@ -6,6 +6,11 @@ import (
 	"strings"
 )
 
+var (
+	IsDebug     = false
+	_IsDebugSet = false
+)
+
 func GetApiPrefix(defaultprefix string) string {
 	prefix := os.Getenv("API_PREFIX")
 	if prefix == "" {
@@ -40,4 +45,13 @@ func GetEnvValueOrDefault(key, defvalue string) string {
 		return defvalue
 	}
 	return v
+}
+
+func GetIsDebug() bool {
+	if !_IsDebugSet {
+		d := GetEnvValueOrDefault("DEBUG", "false")
+		IsDebug = d == "true"
+		_IsDebugSet = true
+	}
+	return IsDebug
 }
