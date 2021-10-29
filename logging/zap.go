@@ -4,6 +4,7 @@ import (
 	"os"
 	"strings"
 
+	"github.com/eliezedeck/gobase/config"
 	"github.com/eliezedeck/gozap2seq"
 	"go.uber.org/zap"
 	"go.uber.org/zap/zapcore"
@@ -17,6 +18,10 @@ func init() {
 	loggerConfig := zap.NewProductionConfig()
 	loggerConfig.EncoderConfig.EncodeTime = zapcore.TimeEncoderOfLayout("Jan_2 15:04:05.000")
 	loggerConfig.EncoderConfig.EncodeLevel = zapcore.CapitalLevelEncoder
+	if config.GetIsDebug() {
+		// Set min level to Debug if DEBUG=true (env)
+		loggerConfig.Level = zap.NewAtomicLevelAt(zap.DebugLevel)
+	}
 
 	// Automatically use SEQ if the env var `SEQ_URL` is present
 	sequrl := strings.TrimSpace(os.Getenv("SEQ_URL"))
