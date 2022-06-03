@@ -1,0 +1,3 @@
+tasks:
+  - before: go mod download
+  - init: echo 'init done'
