@@ -1,3 +1,19 @@
 tasks:
-  - before: go mod download
-  - init: echo 'init done'
+  - name: Setup & Services
+    init: |
+      go mod download
+      go install golang.org/x/tools/cmd/stringer@latest
+
+    command: |
+      # Longer git credential cache
+      git config --global credential.helper 'cache --timeout=36000'
+
+vscode:
+  extensions:
+    - golang.go
+
+    - akosyakov.gitpod-monitor
+    - ms-kubernetes-tools.vscode-kubernetes-tools
+    - mhutchie.git-graph
+    - thinker.copy-as-snippet
+    - ms-azuretools.vscode-docker
