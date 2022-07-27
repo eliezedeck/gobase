@@ -21,6 +21,20 @@ func ZapLoggerForEcho(logger *zap.Logger) echo.MiddlewareFunc {
 			fields := make([]zapcore.Field, 0, 10)
 
 			fields = append(fields, zap.String("request", fmt.Sprintf("%s %s", req.Method, req.RequestURI)))
+			fields = append(fields, zap.String("ip", c.RealIP()))
+			fields = append(fields, zap.String("host", req.Host))
+			fields = append(fields, zap.String("user_agent", req.UserAgent()))
+
+			// Log the ActivityId
+			activityId := c.Get("activityId")
+			if activityId != nil {
+				fields = append(fields, zap.String("ActivityId", activityId.(string)))
+			}
+			// Typical X-Request-ID
+			id := req.Header.Get(echo.HeaderXRequestID)
+			if id != "" {
+				fields = append(fields, zap.String("request_id", id))
+			}
 
 			requestLogger.Info("Started: {request}", fields...)
 
@@ -32,23 +46,9 @@ func ZapLoggerForEcho(logger *zap.Logger) echo.MiddlewareFunc {
 
 			res := c.Response()
 
-			// Log the ActivityId
-			activityId := c.Get("activityId")
-			if activityId != nil {
-				fields = append(fields, zap.String("ActivityId", activityId.(string)))
-			}
-
 			fields = append(fields, zap.Int("status", res.Status))
-			fields = append(fields, zap.String("ip", c.RealIP()))
-			fields = append(fields, zap.String("host", req.Host))
 			fields = append(fields, zap.Int64("size", res.Size))
-			fields = append(fields, zap.String("user_agent", req.UserAgent()))
 			fields = append(fields, zap.String("time", time.Since(start).String()))
-
-			id := req.Header.Get(echo.HeaderXRequestID)
-			if id != "" {
-				fields = append(fields, zap.String("request_id", id))
-			}
 
 			n := res.Status
 			switch {
