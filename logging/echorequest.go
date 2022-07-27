@@ -36,7 +36,7 @@ func ZapLoggerForEcho(logger *zap.Logger) echo.MiddlewareFunc {
 				fields = append(fields, zap.String("request_id", id))
 			}
 
-			requestLogger.Info("Started: {request}", fields...)
+			requestLogger.Info("🚀 Started: {request}", fields...)
 
 			err := next(c)
 			if err != nil {
@@ -53,13 +53,13 @@ func ZapLoggerForEcho(logger *zap.Logger) echo.MiddlewareFunc {
 			n := res.Status
 			switch {
 			case n >= 500:
-				requestLogger.Error("Server error: {request}", fields...)
+				requestLogger.Error("🏁 Server error: {request}", fields...)
 			case n >= 400:
-				requestLogger.Warn("Client error: {request}", fields...)
+				requestLogger.Warn("🏁 Client error: {request}", fields...)
 			case n >= 300:
-				requestLogger.Info("Redirection: {request}", fields...)
+				requestLogger.Info("🏁 Redirection: {request}", fields...)
 			default:
-				requestLogger.Info("Success: {request}", fields...)
+				requestLogger.Info("🏁 Success: {request}", fields...)
 			}
 
 			return err
