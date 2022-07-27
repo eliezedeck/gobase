@@ -4,7 +4,7 @@ go 1.17
 
 require (
 	github.com/Azure/azure-pipeline-go v0.2.3
-	github.com/Azure/azure-storage-blob-go v0.15.0
+	github.com/Azure/azure-storage-blob-go v0.14.0 // This needs to stay at v0.14.0 unless I want to update the API usage
 	github.com/eliezedeck/gozap2seq v0.2.1
 	github.com/go-playground/mold/v4 v4.2.0
 	github.com/go-playground/validator/v10 v10.11.0
