@@ -16,7 +16,13 @@ func ZapLoggerForEcho(logger *zap.Logger) echo.MiddlewareFunc {
 			// Use a logger for this context only, may be replaced if there is an error (see below)
 			requestLogger := logger
 
+			req := c.Request()
 			start := time.Now()
+			fields := make([]zapcore.Field, 0, 10)
+
+			fields = append(fields, zap.String("request", fmt.Sprintf("%s %s", req.Method, req.RequestURI)))
+
+			requestLogger.Info("Started: {request}", fields...)
 
 			err := next(c)
 			if err != nil {
@@ -24,10 +30,7 @@ func ZapLoggerForEcho(logger *zap.Logger) echo.MiddlewareFunc {
 				c.Error(err)
 			}
 
-			req := c.Request()
 			res := c.Response()
-
-			fields := make([]zapcore.Field, 0, 10)
 
 			// Log the ActivityId
 			activityId := c.Get("activityId")
@@ -38,7 +41,6 @@ func ZapLoggerForEcho(logger *zap.Logger) echo.MiddlewareFunc {
 			fields = append(fields, zap.Int("status", res.Status))
 			fields = append(fields, zap.String("ip", c.RealIP()))
 			fields = append(fields, zap.String("host", req.Host))
-			fields = append(fields, zap.String("request", fmt.Sprintf("%s %s", req.Method, req.RequestURI)))
 			fields = append(fields, zap.Int64("size", res.Size))
 			fields = append(fields, zap.String("user_agent", req.UserAgent()))
 			fields = append(fields, zap.String("time", time.Since(start).String()))
