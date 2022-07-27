@@ -35,7 +35,6 @@ func ZapLoggerForEcho(logger *zap.Logger) echo.MiddlewareFunc {
 				fields = append(fields, zap.String("ActivityId", activityId.(string)))
 			}
 
-			fields = append(fields)
 			fields = append(fields, zap.Int("status", res.Status))
 			fields = append(fields, zap.String("ip", c.RealIP()))
 			fields = append(fields, zap.String("host", req.Host))

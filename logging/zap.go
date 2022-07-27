@@ -14,6 +14,7 @@ var (
 	L *zap.Logger
 )
 
+// Init must be called explicitly before the global L variable points to a valid *zap.Logger instance
 func Init() {
 	loggerConfig := zap.NewProductionConfig()
 	loggerConfig.EncoderConfig.EncodeTime = zapcore.TimeEncoderOfLayout("Jan_2 15:04:05.000")
