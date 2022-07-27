@@ -14,7 +14,7 @@ var (
 	L *zap.Logger
 )
 
-func init() {
+func Init() {
 	loggerConfig := zap.NewProductionConfig()
 	loggerConfig.EncoderConfig.EncodeTime = zapcore.TimeEncoderOfLayout("Jan_2 15:04:05.000")
 	loggerConfig.EncoderConfig.EncodeLevel = zapcore.CapitalLevelEncoder
@@ -50,6 +50,5 @@ func init() {
 		L = zap.New(loggerconsole.Core(),
 			zap.AddCaller(),
 			zap.AddStacktrace(zapcore.ErrorLevel))
-		L.Warn("Running normally without SEQ /")
 	}
 }
