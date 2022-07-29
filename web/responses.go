@@ -12,13 +12,13 @@ func OK(c echo.Context) error {
 	})
 }
 
-func Error(c echo.Context, message string) error {
+func BadRequestError(c echo.Context, message string) error {
 	return c.JSON(http.StatusBadRequest, map[string]interface{}{
 		"error": message,
 	})
 }
 
-func ErrorWithCode(c echo.Context, errCode int, message string) error {
+func BadRequestErrorWithCode(c echo.Context, errCode int, message string) error {
 	return c.JSON(http.StatusBadRequest, map[string]interface{}{
 		"error": message,
 		"code":  errCode,
