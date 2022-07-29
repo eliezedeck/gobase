@@ -24,3 +24,16 @@ func BadRequestErrorWithCode(c echo.Context, errCode int, message string) error 
 		"code":  errCode,
 	})
 }
+
+func Error(c echo.Context, message string) error {
+	return c.JSON(http.StatusInternalServerError, map[string]interface{}{
+		"error": message,
+	})
+}
+
+func ErrorWithCode(c echo.Context, errCode int, message string) error {
+	return c.JSON(http.StatusInternalServerError, map[string]interface{}{
+		"error": message,
+		"code":  errCode,
+	})
+}
