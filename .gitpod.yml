@@ -16,7 +16,5 @@ vscode:
     - golang.go
 
     - akosyakov.gitpod-monitor
-    - ms-kubernetes-tools.vscode-kubernetes-tools
     - mhutchie.git-graph
     - thinker.copy-as-snippet
-    - ms-azuretools.vscode-docker
