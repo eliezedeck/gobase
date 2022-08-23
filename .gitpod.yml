@@ -18,3 +18,5 @@ vscode:
     - akosyakov.gitpod-monitor
     - mhutchie.git-graph
     - thinker.copy-as-snippet
+
+    - github.copilot
