@@ -31,9 +31,12 @@ be sent to SEQ for your convenience. If you have a specific SEQ API Token, you c
 The `alert` package allows to integrate any alerting system. It already contains a default system for sending alert to
 PushOver (Android and iOS push notifications), but you need to set the tokens before it will be functional.
 
-### http
+### http and web
 
 Functions for dealing with HTTP requests.
+
+- `web.UploadImageToAzureBlob()` — Takes the image from the user from the HTTP request, and uploads it to Azure Blob
+  storage. If the file is of invalid size or type, and error will be immediately returned using `web.Error()`
 
 ### random
 
