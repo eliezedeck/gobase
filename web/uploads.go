@@ -13,16 +13,20 @@ import (
 	"github.com/labstack/echo/v4"
 )
 
+const (
+	ErrorCodeBadUploadFileSize = 1300000
+)
+
 func UploadImageToAzureBlob(c echo.Context, bs *azure.BlobService, azureContainer string, formName string, maxFileSize int64) (string, error) {
 	fh, err := c.FormFile(formName)
 	if err != nil {
 		return "", err // HTTP 500
 	}
 	if fh.Size > maxFileSize {
-		return "", Error(c, "Image size too big")
+		return "", ErrorWithCode(c, ErrorCodeBadUploadFileSize, "Image size too big")
 	}
 	if fh.Size <= 512 {
-		return "", Error(c, "Image size too small")
+		return "", ErrorWithCode(c, ErrorCodeBadUploadFileSize, "Image size too small")
 	}
 
 	fc, err := fh.Open()
@@ -46,7 +50,7 @@ func UploadImageToAzureBlob(c echo.Context, bs *azure.BlobService, azureContaine
 	case "image/svg+xml":
 		fileext = "svg"
 	default:
-		return "", Error(c, "Only Image (JPEG, PNG, TIFF) files are supported")
+		return "", ErrorWithCode(c, ErrorCodeBadUploadFileSize, "Only Image (JPEG, PNG, TIFF) files are supported")
 	}
 
 	// Upload the file to Azure Blob
