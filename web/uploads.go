@@ -51,7 +51,7 @@ func UploadImageToAzureBlob(c echo.Context, bs *azure.BlobService, azureContaine
 	switch contentType {
 	case "image/png":
 		fileext = "png"
-	case "image/jpg":
+	case "image/jpg", "image/jpeg":
 		fileext = "jpg"
 	case "image/tiff":
 		fileext = "tiff"
